@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>🎯 Smart Event Dashboard</title>
+</head>
+<body>
+    <h1>🎯 Smart Event Dashboard</h1>
+    <div class="content-container">
+    <div id="main-add-event-container">
+        <h3>Add New Event</h3>
+        <form action="" id="main-add-event-container form">
+            <label for="eventTitle">Event Title:</label>
+            <input type="text" name="" id="eventTitle" required>
+
+            <label for="eventDate">Event Date:</label>
+            <input type="date" name="" id="eventDate" required>
+
+            <label for="eventCategory">Category:</label>
+            <select name="" id="eventCategory">
+                <option value="Conference">Conference</option>
+                <option value="Workshop">Workshop</option>
+                <option value="Meetup">Meetup</option>
+                <option value="Social">Social</option>
+                <option value="Webinar">Webinar</option>
+            </select>
+
+            <label for="eventDescription">Description</label>
+            <textarea name="" id="eventDescription"></textarea>
+
+            <button type="submit">Add Event</button>
+        </form>
+    </div>
+
+    <div id="main-my-events-container">
+        <h3 >My Events</h3>
+
+        <div>
+        <button id="clear-events-btn">Clear All Events</button>
+        <button id="add-events-btn">Add Sample Events</button>
+        </div>
+
+        <div id="all-events-container">
+            <h4 class="eventStatus">No Events Yet !</h4>
+        </div>
+    </div>
+    </div>
+
+    <div id="DOM-manipulation-container">
+        <h3>DOM Manipulation Demo</h3>
+        <form action="">
+            <label for="DOM-input">You Pressed:</label><input type="text" id="DOM-input" readonly>
+        </form>
+    </div>
+
+    <script>
+        let form = document.querySelector("#main-add-event-container form")
+        let eventTitle = document.querySelector("#eventTitle")
+        let eventDate = document.querySelector("#eventDate")
+        let eventCategory = document.querySelector("#eventCategory")
+        let eventDescription = document.querySelector("#eventDescription")
+        let allEventsContainer = document.querySelector("#all-events-container")
+        let clearEventsBtn = document.querySelector("#clear-events-btn")
+        let sampleEventsBtn = document.querySelector("#add-events-btn")
+        let domInput = document.querySelector("#DOM-input");
+        
+        function addEventFunction(event){
+            event.preventDefault()
+            
+            let card = document.createElement("div")
+            card.classList.add("event-card");
+
+            card.innerHTML = `<button class="delete-btn">X</button>
+                            <h2 style="color:black">${eventTitle.value}</h4><br>
+                            <span><h4>${eventDate.value}<h4></span>
+                            <span>${eventCategory.value}</span>
+                            <p>${eventDescription.value}</p>`
+                
+            while (allEventsContainer.querySelector(".eventStatus")) {
+                allEventsContainer.querySelector(".eventStatus").remove();
+            }
+
+            allEventsContainer.appendChild(card);
+            form.reset();
+        }
+        form.addEventListener("submit", addEventFunction)
+        function clearEventsFunction(){
+             allEventsContainer.innerHTML =`<h4 class="eventStatus">No Events Yet !</h4>`;
+        }
+
+        clearEventsBtn.addEventListener("click", clearEventsFunction)
+
+        // sample event
+        const sample1 = document.createElement("div");
+        sample1.classList.add("event-card");
+            sample1.innerHTML =`<button class="delete-btn">X</button>
+                            <h2 style="color:black">Web Development Conference</h2><br>
+                            <span><h4 style="color:grey">📅 20 Feb 2026</h4></span>
+                            <span>Conference</span>
+                            <p>Annual conference on modern technologies.</p>`
+        const sample2 = document.createElement("div");
+        sample2.classList.add("event-card");
+            sample2.innerHTML =`<button class="delete-btn">X</button>
+                            <h2 style="color:black">JavaScript Workshop</h2><br>
+                            <span><h4 style="color:grey">📅 23 Feb 2026</h4></span>
+                            <span>Workshop 2</span>
+                            <p>Hands-on JavaScript learning session.</p>`
+
+        function addSampleEvent(){
+            document.getElementById("all-events-container").appendChild(sample1)
+            document.getElementById("all-events-container").appendChild(sample2)
+            while (allEventsContainer.querySelector(".eventStatus")) {
+                allEventsContainer.querySelector(".eventStatus").remove();
+            }
+        }
+        sampleEventsBtn.addEventListener("click", addSampleEvent)
+
+        function checkEmptyEvents(){
+        if (allEventsContainer.innerHTML.trim() === "") {
+        allEventsContainer.innerHTML = `<h4 class="eventStatus">No Events Yet !</h4>`;
+    }
+    }
+
+        function deleteElement(e){
+        if (e.target.classList.contains("delete-btn")) {
+        e.target.parentElement.remove();
+        checkEmptyEvents();
+    }
+    }
+    allEventsContainer.addEventListener("click", deleteElement);
+
+    document.addEventListener("keydown", function (e) {
+    domInput.value = `${e.key}`;
+    });
+    </script>
+</body>
+</html>
